@@ -131,7 +131,7 @@ export default tslint.config(
             "src/test/slow/entry-points",
             "scripts",
             "bin",
-
+            "own_example/",
             // Not long for this world
             "src/test/events.test.ts",
         ],

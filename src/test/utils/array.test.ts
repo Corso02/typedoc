@@ -1,9 +1,11 @@
 import { deepStrictEqual as equal, doesNotThrow } from "assert";
 import {
     binaryFindPartition,
+    filter,
     insertOrderSorted,
     insertPrioritySorted,
     removeIfPresent,
+    unique,
 } from "../../lib/utils/array";
 
 describe("Array utils", () => {
@@ -138,4 +140,51 @@ describe("Array utils", () => {
             equal(arr, [2, 1]);
         });
     });
+
+    describe("unique", () => {
+        it("Supports an empty array", () => {
+            equal(unique([]), [])
+        });
+
+        it("Gets all unique values", () => {
+            const arr = [5,5,5,1,1,2,3,1];
+            const unq = unique(arr);
+            equal(unq.sort(), [5,1,2,3].sort());
+        });
+        
+        it("Doesnt remove any values from original array", () => {
+            let arr = [5,5,5,1,2,3,4,6];
+            unique(arr);
+            equal(arr, [5,5,5,1,2,3,4,6]);
+        })
+
+        it("Returns all unique values (input array already contains only unique values)", () => {
+            let arr = [1,2,3,4,5];
+            let unq = unique(arr);
+            equal(arr, unq);
+        })
+    })
+
+    describe("filter", () => {
+        it("Supports an empty array", () => {
+            equal(filter([], () => true), []);
+        })
+
+        it("Supports undefied passed as an array", () => {
+            equal(filter(undefined, () => true), []);
+        })
+
+        it("Filters out values based on condition", () => {
+            let arr = [1,2,3,4,5,6,7,8,9,10,-1,5,undefined];
+            let filtered = filter(arr, (n) => n ? n > 5 : false);
+            equal(filtered, [6,7,8,9,10]);
+        })
+
+        it("Doesnt mutate input array", () => {
+            let arr = [1,2,3,4,5,6,8,7,6];
+            filter(arr, (n) => n > 6);
+            equal(arr, [1,2,3,4,5,6,8,7,6]);
+        })
+    })
+
 });

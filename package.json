@@ -67,7 +67,7 @@
     "doc:cd": "node --inspect-brk bin/typedoc --tsconfig src/test/converter/tsconfig.json",
     "doc:c2": "node bin/typedoc --options src/test/converter2 --tsconfig src/test/converter2/tsconfig.json",
     "doc:c2d": "node --inspect-brk bin/typedoc --options src/test/converter2 --tsconfig src/test/converter2/tsconfig.json",
-    "example": "cd example && node ../bin/typedoc",
+    "example": "cd own_example && node ../bin/typedoc",
     "test:full": "c8 -r lcov -r text-summary mocha --config .config/mocha.full.json",
     "rebuild_specs": "node scripts/rebuild_specs.js",
     "build": "npm run build:tsc && npm run build:themes",
@@ -79,7 +79,8 @@
     "prettier": "prettier --config .config/.prettierrc.json --ignore-path .config/.prettierignore",
     "prepack": "node scripts/set_strict.js false && npm run build:prod",
     "prepare": "node scripts/prepare.mjs",
-    "postpublish": "node scripts/set_strict.js true"
+    "postpublish": "node scripts/set_strict.js true",
+    "build-run": "npm run build && npm run example"
   },
   "keywords": [
     "typescript",
