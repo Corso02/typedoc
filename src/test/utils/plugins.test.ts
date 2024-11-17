@@ -1,9 +1,12 @@
 import { tempdirProject } from "@typestrong/fs-fixture-builder";
-import type { Application } from "../../index";
+import { Renderer, type Application } from "../../index";
 import { loadPlugins } from "../../lib/utils/plugins";
 import { TestLogger } from "../TestLogger";
 import { join, resolve } from "path";
 import { Internationalization } from "../../lib/internationalization/internationalization";
+import { SitemapPlugin } from "../../lib/output/plugins";
+import { stringifyXml, XmlElementData } from "../../lib/output/plugins/SitemapPlugin";
+import { equal } from "assert";
 
 describe("loadPlugins", () => {
     let logger: TestLogger;
@@ -88,4 +91,54 @@ describe("loadPlugins", () => {
             `error: Invalid structure in plugin ${plugin}, no load function found`,
         );
     });
+
+    it("StringifyXML test two children same level", () => {
+        let testData: XmlElementData = {
+            tag: "parentTag",
+            children: [
+                {
+                    tag: "child1",
+                    children: []
+                },
+                {
+                    tag: "child2",
+                    children: []
+                },
+            ]   
+        }
+
+        let res = stringifyXml(testData);
+        equal(res, "<parentTag>\n\t<child1>\n\t</child1>\n\t<child2>\n\t</child2>\n</parentTag>");
+    })
+
+    it("StringifyXML test two children with attributes same level", () => {
+        let testData: XmlElementData = {
+            tag: "parentTag",
+            children: [
+                {
+                    tag: "child1",
+                    attr: {"attr1": "val1"},
+                    children: []
+                },
+                {
+                    tag: "child2",
+                    children: []
+                },
+            ]   
+        }
+
+        let res = stringifyXml(testData);
+        equal(res, '<parentTag>\n\t<child1 attr1="val1">\n\t</child1>\n\t<child2>\n\t</child2>\n</parentTag>');
+    })
+
+    it("StringifyXML test children as string", () => {
+        let testData: XmlElementData = {
+            tag: "parentTag",
+            children: "<child1></child1>"
+        }
+
+        let res = stringifyXml(testData);
+        equal(res, "<parentTag>&lt;child1&gt;&lt;/child1&gt;</parentTag>");
+    })
+
 });

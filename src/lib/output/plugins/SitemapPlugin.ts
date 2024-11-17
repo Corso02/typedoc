@@ -77,13 +77,13 @@ export class SitemapPlugin extends RendererComponent {
     }
 }
 
-interface XmlElementData {
+export interface XmlElementData {
     attr?: Record<string, string>;
     tag: string;
     children: XmlElementData[] | string;
 }
 
-function stringifyXml(xml: XmlElementData, indent = 0) {
+export function stringifyXml(xml: XmlElementData, indent = 0) {
     const parts = ["\t".repeat(indent), "<", xml.tag];
 
     for (const [key, val] of Object.entries(xml.attr || {})) {
